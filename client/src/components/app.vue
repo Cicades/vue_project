@@ -1,11 +1,12 @@
 <template>
 	<div>
-		<h3>hello vue</h3>
+		<mt-header fixed title="Vue-project"></mt-header>
 	</div>
 </template>
 <style scoped lang="scss">
-	h3{
-		color: red;
+	.mint-header{
+		background-color: orange;
 	}
 </style>
-<script></script>
+<script>
+</script>

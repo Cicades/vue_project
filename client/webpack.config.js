@@ -26,7 +26,8 @@ module.exports = {
 			{test: /\.(jpg|png|jpeg|bmp|gif)$/, use: 'url-loader?limit=7631&name=[hash:8]-[name].[ext]'},
 			{test: /\.(ttf|eot|svg|woff|woff2)$/, use: 'url-loader'},
 			//在.vue文件中使用scss，或者单独使用.scss都要经过此配置
-			{test: /\.scss/, use: ['style-loader', 'css-loader', 'sass-loader']}
+			{test: /\.scss/, use: ['style-loader', 'css-loader', 'sass-loader']},
+			{test: /\.css/, use: ['style-loader', 'css-loader']}
 		]
 	}
 }
