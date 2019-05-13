@@ -8,12 +8,12 @@
   </div>
 </template>
 <script>
-  import axios from 'axios'
+  import request from '@/models/model.js'
   import { Toast } from 'mint-ui'
   export default {
     created(){
       let t = Toast('图片加载中')
-      axios.get('http://www.liulongbin.top:3005/api/getlunbo').then(res => {
+      request.get('/getlunbo').then(res => {
       this.swipeImages = res.data.message
       t.close()
     })},

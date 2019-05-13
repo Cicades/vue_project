@@ -6,6 +6,7 @@
         <i :class="itemclass"></i>
         <span>{{titles[index]}}</span>
         </router-link>
+        <mt-badge v-show="index===2" type="error" size="small">0</mt-badge>
       </li>
     </ul>
   </div>
@@ -22,7 +23,6 @@
     position: fixed;
     bottom: 0;
     width: 100%;
-    height: 50px;
     border-top: 1px solid #ccc;
     padding: 5px 0;
     background-color: #fff;
@@ -51,6 +51,14 @@
         }
         span{
           display: block;
+        }
+        .mint-badge{
+          position: absolute;
+          right: 20px;
+          top: 0;
+        }
+        &:nth-of-type(3){
+          position: relative;
         }
       }
     }
