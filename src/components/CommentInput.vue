@@ -5,33 +5,33 @@
   </div>
 </template>
 <script>
-  import request from '@/models/model.js'
-  import qs from 'qs'
-  export default {
-    data(){
-      return {
-        content: ''
-      }
-    },
-    props: ['articleId'],
-    methods: {
-      postComment(){
-        request.request({
-          url: '/postcomment/' + this.articleId,
-          method: 'post',
-          headers:{
-            'Content-Type': 'application/x-www-form-urlencoded'
-          },
-          data: qs.stringify({content: this.content})
-        }).then(res => {
-          if(res.data.status === 0){
-            this.$emit('updateComment', {user_name: '匿名用户', add_time: Date.now(), content: this.content})
-            this.content = ''
-          }
-        })
-      }
+import request from '@/models/model.js'
+import qs from 'qs'
+export default {
+  data () {
+    return {
+      content: ''
+    }
+  },
+  props: ['articleId'],
+  methods: {
+    postComment () {
+      request.request({
+        url: '/postcomment/' + this.articleId,
+        method: 'post',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        data: qs.stringify({ content: this.content })
+      }).then(res => {
+        if (res.data.status === 0) {
+          this.$emit('updateComment', { user_name: '匿名用户', add_time: Date.now(), content: this.content })
+          this.content = ''
+        }
+      })
     }
   }
+}
 </script>
 <style scoped lang="scss">
   .comment-input-wrapper{

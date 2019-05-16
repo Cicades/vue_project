@@ -21,62 +21,61 @@
     </article>
 </template>
 <script>
-  import request from '@/models/model.js'
-  export default {
-    data(){
-      return {
-        id: this.$route.params.id,
-        imgInfo: {},
-        thumbImgs: [],
-        page: 1,
-        comments: []
-      }
-    },
-    created(){
-        request.get('/getimageInfo/'+this.id)
-        .then(res => {
-            if(res.data.status === 0){
-              this.imgInfo = res.data.message[0]
-              return request.get('getthumimages/'+this.id)
+import request from '@/models/model.js'
+export default {
+  data () {
+    return {
+      id: this.$route.params.id,
+      imgInfo: {},
+      thumbImgs: [],
+      page: 1,
+      comments: []
+    }
+  },
+  created () {
+    request.get('/getimageInfo/' + this.id)
+      .then(res => {
+        if (res.data.status === 0) {
+          this.imgInfo = res.data.message[0]
+          return request.get('getthumimages/' + this.id)
+        }
+      })
+      .then(res => {
+        if (res.data.status === 0) {
+          // 获取缩略图
+          res.data.message.forEach(function (item, index) {
+            let extendObj = {
+              msrc: item.src,
+              alt: '',
+              title: '',
+              w: 600,
+              h: 400
             }
-        })
-        .then(res => {
-          if(res.data.status === 0){
-            //获取缩略图
-            res.data.message.forEach(function(item, index){
-              let extendObj = {
-                msrc: item.src,
-                alt: '',
-                title: '',
-                w: 600,
-                h: 400
-              }
-              Object.assign(item, extendObj)
-            })
-            this.thumbImgs = res.data.message
-            return request.get(`/getcomments/${this.id}?pageindex=${this.page}`)
-          }
-        })
-        .then(res => {
-          // 获取评论
-          if( res.data.status === 0 ){
-            this.comments = res.data.message
-          }
-        })
+            Object.assign(item, extendObj)
+          })
+          this.thumbImgs = res.data.message
+          return request.get(`/getcomments/${this.id}?pageindex=${this.page}`)
+        }
+      })
+      .then(res => {
+        // 获取评论
+        if (res.data.status === 0) {
+          this.comments = res.data.message
+        }
+      })
+  },
+  methods: {
+    getMoreComments () {
+      this.page++
+      request.get(`/getcomments/${this.id}?pageindex=${this.page}`).then(res => {
+        if (res.data.status === 0) { this.comments = this.comments.concat(res.data.message) }
+      })
     },
-    methods:{
-      getMoreComments(){
-        this.page ++
-        request.get(`/getcomments/${this.id}?pageindex=${this.page}`).then(res => {
-          if (res.data.status === 0)
-            this.comments = this.comments.concat(res.data.message)
-        })
-      },
-      updateComment(data){
-        this.comments.unshift(data)
-      }
+    updateComment (data) {
+      this.comments.unshift(data)
     }
   }
+}
 </script>
 <style lang="scss">
   article.img-detail{

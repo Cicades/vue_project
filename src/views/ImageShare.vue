@@ -12,8 +12,7 @@
         <li v-for="imgItem in imgList" :key="imgItem.id">
           <div>
             <img v-lazy="imgItem.img_url" alt="imgItem.title" @click="$router.push({name:'imgDetail',params:{id:imgItem.id}})">
-            <span v-html="imgItem.zhaiyao">
-            </span>
+            <span v-html="imgItem.zhaiyao"></span>
           </div>
         </li>
       </ul>
@@ -21,46 +20,46 @@
   </div>
 </template>
 <script>
-  import BScroll from 'better-scroll'
-  import request from '@/models/model.js'
-  export default {
-    created(){
-      this.initCates()  // 初始化滑动导航
-      this.changeCate(this.currentCateId)
+import BScroll from 'better-scroll'
+import request from '@/models/model.js'
+export default {
+  created () {
+    this.initCates() // 初始化滑动导航
+    this.changeCate(this.currentCateId)
+  },
+  data () {
+    return {
+      cates: [],
+      currentCateId: 0,
+      imgList: []
+    }
+  },
+  methods: {
+    initCates () {
+      request.get('/getimgcategory').then(res => {
+        if (res.data.status === 0) {
+          this.cates = res.data.message
+          this.cates.unshift({ title: '全部', id: 0 })
+          this.$nextTick(() => {
+            this.scroll = new BScroll(this.$refs.wrapper, {
+              scrollX: true,
+              scrollY: false,
+              click: true
+            })
+          })
+        }
+      })
     },
-    data(){
-      return {
-        cates: [],
-        currentCateId: 0,
-        imgList: []
-      }
-    },
-    methods: {
-      initCates(){
-        request.get('/getimgcategory').then( res => {
-          if(res.data.status === 0){
-            this.cates = res.data.message
-            this.cates.unshift({title: '全部', id: 0})
-            this.$nextTick( () => {
-              this.scroll = new BScroll(this.$refs.wrapper, {
-                scrollX: true,
-                scrollY: false,
-                click: true
-              })
-            } )
-          }
-        } )
-      },
-      changeCate(id){
-        this.currentCateId = id
-        request.get(`getimages/${id}`).then(res => {
-          if(res.data.status === 0){
-            this.imgList = res.data.message
-          }
-        })
-      }
+    changeCate (id) {
+      this.currentCateId = id
+      request.get(`getimages/${id}`).then(res => {
+        if (res.data.status === 0) {
+          this.imgList = res.data.message
+        }
+      })
     }
   }
+}
 </script>
 <style scoped lang="scss">
   image[lazy=loading] {

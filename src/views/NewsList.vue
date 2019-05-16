@@ -8,32 +8,32 @@
   </div>
 </template>
 <script>
-  import request from '@/models/model.js'
-  import { Toast } from 'mint-ui'
-  export default {
-    methods:{
-      getNewsList(){
-        let t = Toast('列表加载中...')
-        request.get('/getnewslist').then(res => {
-            if (res.data.status === 0){
-              this.newsList = res.data.message
-              t.close()
-            } else {
-              t.close()
-              Toast('列表加载失败')
-            }
-          })
-      }
-    },
-    created(){
-      this.getNewsList()
-    },
-    data: function(){
-      return {
-        newsList: null
-      }
+import request from '@/models/model.js'
+import { Toast } from 'mint-ui'
+export default {
+  methods: {
+    getNewsList () {
+      let t = Toast('列表加载中...')
+      request.get('/getnewslist').then(res => {
+        if (res.data.status === 0) {
+          this.newsList = res.data.message
+          t.close()
+        } else {
+          t.close()
+          Toast('列表加载失败')
+        }
+      })
+    }
+  },
+  created () {
+    this.getNewsList()
+  },
+  data: function () {
+    return {
+      newsList: null
     }
   }
+}
 </script>
 <style lang="scss">
   .news-list{

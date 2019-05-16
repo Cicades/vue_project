@@ -9,9 +9,9 @@
   </div>
 </template>
 <script>
-  export default {
-    props: ['comment']
-  }
+export default {
+  props: ['comment']
+}
 </script>
 <style scoped lang="scss">
   .comment-item{

@@ -1,20 +1,20 @@
 <template>
   <div class="tab-bar">
     <ul>
-      <li v-for="(itemclass,index) in itemClasses">
+      <li v-for="(itemclass,index) in itemClasses" :key="index">
         <router-link :to="links[index]">
         <i :class="itemclass"></i>
         <span>{{titles[index]}}</span>
         </router-link>
-        <mt-badge v-show="index===2" type="error" size="small">0</mt-badge>
+        <mt-badge v-show="index===2" type="error" size="small" id="cart-badge">{{$store.getters.goodsSum}}</mt-badge>
       </li>
     </ul>
   </div>
 </template>
 <script>
-  export default {
-    props: ['itemClasses', 'titles', 'links']
-  }
+export default {
+  props: ['itemClasses', 'titles', 'links']
+}
 </script>
 <style scoped lang="scss">
   $itemColor: #616060;

@@ -18,47 +18,46 @@
   </article>
 </template>
 <script>
-  import request from '@/models/model.js'
-  import {Toast} from 'mint-ui'
-  export default {
-    created(){
-      this.getNewsDetail()
+import request from '@/models/model.js'
+import { Toast } from 'mint-ui'
+export default {
+  created () {
+    this.getNewsDetail()
+  },
+  data: function () {
+    return {
+      id: this.$route.params.id,
+      news: {},
+      comments: [],
+      page: 1
+    }
+  },
+  methods: {
+    getNewsDetail () {
+      let t = Toast({ message: '新闻加载中...', duration: -1 })
+      request.get('/getnew/' + this.id).then(res => {
+        if (res.data.status === 0) {
+          this.news = res.data.message[0]
+          return request.get(`/getcomments/${this.id}?pageindex=${this.page}`)
+        }
+      }).then(res => {
+        if (res.data.status === 0) {
+          this.comments = res.data.message
+          t.close()
+        }
+      })
     },
-    data: function(){
-      return {
-        id: this.$route.params.id,
-        news: {},
-        comments: [],
-        page: 1
-      }
+    getMoreComments () {
+      this.page++
+      request.get(`/getcomments/${this.id}?pageindex=${this.page}`).then(res => {
+        if (res.data.status === 0) { this.comments = this.comments.concat(res.data.message) }
+      })
     },
-    methods:{
-      getNewsDetail(){
-        let t = Toast({message:'新闻加载中...', duration: -1})
-        request.get('/getnew/' + this.id).then(res => {
-          if( res.data.status === 0 ) {
-            this.news = res.data.message[0]
-            return request.get(`/getcomments/${this.id}?pageindex=${this.page}`)
-          }
-        }).then(res => {
-          if( res.data.status === 0 ){
-            this.comments = res.data.message
-            t.close()
-          }
-        })
-      },
-      getMoreComments(){
-        this.page ++
-        request.get(`/getcomments/${this.id}?pageindex=${this.page}`).then(res => {
-          if (res.data.status === 0)
-            this.comments = this.comments.concat(res.data.message)
-        })
-      },
-      updateComment(data){
-        this.comments.unshift(data)
-      }
+    updateComment (data) {
+      this.comments.unshift(data)
     }
   }
+}
 </script>
 <style scoped lang="scss">
   article{
